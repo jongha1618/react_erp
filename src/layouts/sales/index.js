@@ -53,40 +53,7 @@ function Tables() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Inventory
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                <DataTable
-                  table={{ columns, rows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
-                />
-                {/* {data.map((item, index) => (
-                  <Card key={index}>
-                    <h2 className="text-xl">{item.name}</h2>
-                    <p>{item.description}</p>
-                  </Card>
-                ))} */}
-              </MDBox>
-            </Card>
-          </Grid>
-          {/* <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
-              >
-                <MDTypography variant="h6" color="white">
-                  Used Items
+                  Sales
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
@@ -99,7 +66,7 @@ function Tables() {
                 />
               </MDBox>
             </Card>
-          </Grid> */}
+          </Grid>
         </Grid>
       </MDBox>
       <Footer />

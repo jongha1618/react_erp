@@ -37,7 +37,10 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
+import Customers from "layouts/customers";
+import NewCustomer from "layouts/customers/newcustomer";
 import Tables from "layouts/tables";
+import Sales from "layouts/sales";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
@@ -58,32 +61,74 @@ const routes = [
     component: <Dashboard />,
   },
   {
+    type: "title",
+    key: "devider",
+  },
+  {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
+    name: "Customer",
+    key: "customers",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/customers",
+    component: <Customers />,
+    // collapse: [
+    //   {
+    //     name: "New Customer",
+    //     key: "new-customer",
+    //     route: "/customers/newcustomer",
+    //     component: <NewCustomer />,
+    //   },
+    // ],
+  },
+  {
+    type: "route",
+    name: "New Customer", // This name is NOT used in the sidebar
+    key: "new-customers",
+    route: "/customers/newcustomer",
+    component: <NewCustomer />,
+  },
+  {
+    type: "route",
+    name: "Edit Customer",
+    key: "edit-customer",
+    route: "/customers/newcustomer/:customer_id",
+    component: <NewCustomer />,
+  },
+  {
+    type: "collapse",
+    name: "Inventory",
+    key: "inventory",
+    icon: <Icon fontSize="small">inventory</Icon>,
+    route: "/inventory",
     component: <Tables />,
   },
   {
     type: "collapse",
-    name: "Billing",
-    key: "billing",
+    name: "Sales Order",
+    key: "sales",
     icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/sales",
+    component: <Sales />,
+  },
+  {
+    type: "collapse",
+    name: "Purchase Order",
+    key: "billing",
+    icon: <Icon fontSize="small">store</Icon>,
     route: "/billing",
     component: <Billing />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "RTL",
+  //   key: "rtl",
+  //   icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
+  //   route: "/rtl",
+  //   component: <RTL />,
+  // },
   {
     type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-    route: "/rtl",
-    component: <RTL />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
+    name: "Quotation & Invoice",
     key: "notifications",
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",

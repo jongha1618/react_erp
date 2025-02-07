@@ -35,8 +35,32 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const [data, setData] = useState([]);
+  const [shippedToday, setShippedToday] = useState(0);
+  useEffect(() => {
+    // Fetch data from the backend
+    const tableName = "ep_item_details";
+
+    axios
+      .get(`http://localhost:5000/sales?table=${tableName}`)
+      .then((response) => {
+        setData(response.data);
+        console.log("Data fetched successfully:", response.data);
+        const today = new Date().toISOString().split("T")[0]; // Get today's date in 'YYYY-MM-DD' format
+        const todayShipCount = data.filter(
+          (item) => item.transaction_date && item.transaction_date.startsWith(today)
+        ).length;
+        setShippedToday(todayShipCount);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   return (
     <DashboardLayout>
@@ -48,8 +72,8 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="Bookings"
-                count={281}
+                title="Shipped Year Range"
+                count={data.length}
                 percentage={{
                   color: "success",
                   amount: "+55%",
@@ -62,8 +86,8 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
+                title="Today's Ship"
+                count={shippedToday}
                 percentage={{
                   color: "success",
                   amount: "+3%",
