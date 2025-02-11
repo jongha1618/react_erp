@@ -84,7 +84,6 @@ function CustomerForm() {
     try {
       if (customer_id) {
         // Update existing customer
-        alert("Hello update customer");
         await axios.put(`http://localhost:5000/customers/${customer_id}`, customer);
       } else {
         // Create new customer

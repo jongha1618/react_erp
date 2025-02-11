@@ -35,9 +35,9 @@ export default function data() {
   const [data, setData] = useState([]);
   useEffect(() => {
     // Fetch data from the backend
-    const tableName = "ep_customers";
+    const tableName = "ep_items";
     axios
-      .get(`http://localhost:5000/customers?table=${tableName}`)
+      .get(`http://localhost:5000/ep_items?table=${tableName}`)
       .then((response) => {
         setData(response.data);
         console.log("Data fetched successfully:", response.data);
@@ -76,64 +76,99 @@ export default function data() {
 
   return {
     columns: [
-      { Header: "Customer ID", accessor: "customerid", align: "left" },
-      { Header: "company name", accessor: "company_name", align: "left" },
-      { Header: "contact name", accessor: "contact_name", align: "left" },
-      { Header: "contact email", accessor: "contact_email", align: "left" },
-      { Header: "contact phone", accessor: "contact_phone", align: "left" },
-      { Header: "shipping address", accessor: "shipping_address", align: "left" },
+      { Header: "item ID", accessor: "itemid", align: "left" },
+      { Header: "item code", accessor: "item_code", align: "left" },
+      { Header: "item name", accessor: "item_name", align: "left" },
+      { Header: "part number", accessor: "part_number", align: "left" },
+      { Header: "description", accessor: "description", align: "left" },
+      { Header: "On Hand", accessor: "on_hand", align: "center" },
+      { Header: "serial number", accessor: "serial_number", align: "left" },
+      // { Header: "Document", accessor: "doc_link", align: "left" },
       // { Header: "in stock by", accessor: "instock_by", align: "center" },
       { Header: "action", accessor: "action", align: "center" },
     ],
 
-    rows: data.map((customer) => ({
-      key: customer.customer_id,
-      customerid: <Author name="" cus_id={customer.customer_id} />,
-      company_name: (
+    rows: data.map((item) => ({
+      key: item.item_id,
+      itemid: <Author name="" cus_id={item.item_id} />,
+      item_code: (
+        <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+          {item.item_code}
+        </MDTypography>
+      ),
+      item_name: (
+        <MDTypography variant="caption" color="text" fontWeight="medium">
+          {item.name}
+        </MDTypography>
+      ),
+      part_number: (
         <MDTypography
           component="a"
-          href={`/customers/newcustomer/${customer.customer_id}`} // Pass ID in the URL
+          href={item.document_link}
+          target="_blank"
           variant="caption"
           color="text"
           fontWeight="medium"
         >
-          {customer.company_name}
+          {item.part_number}
         </MDTypography>
       ),
-      contact_name: (
-        <MDTypography variant="caption" color="text" fontWeight="medium">
-          {customer.contact_name}
-        </MDTypography>
-      ),
-      contact_email: (
-        <MDTypography variant="caption" color="text" fontWeight="medium">
-          {customer.contact_email}
-        </MDTypography>
-      ),
-      contact_phone: (
+      description: (
         <MDTypography rel="noopener noreferrer" variant="caption" color="text" fontWeight="medium">
-          {customer.contact_phone}
+          {item.description}
+        </MDTypography>
+      ),
+      on_hand: (
+        <MDBox ml={-1}>
+          <MDBadge
+            badgeContent={item.instock_quantity !== null ? String(item.instock_quantity) : "0"}
+            color={item.instock_quantity === 0 ? "success" : "info"}
+            variant="gradient"
+            size="lg"
+          />
+        </MDBox>
+      ),
+      serial_number: (
+        <MDTypography rel="noopener noreferrer" variant="caption" color="text" fontWeight="medium">
+          {item.serial_number}
+        </MDTypography>
+      ),
+      doc_link: (
+        <MDTypography
+          component="a"
+          href={item.document_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="caption"
+          color="text"
+          fontWeight="medium"
+        >
+          {item.document_link ? "LINK" : null}
+        </MDTypography>
+      ),
+      instock_by: (
+        <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+          {item.first_name + " " + item.last_name}
         </MDTypography>
       ),
       shipping_address: (
         <Address
-          shipping_address={customer.shipping_address}
-          shipping_address_city={customer.shipping_address_city}
-          shipping_address_state={customer.shipping_address_state}
-          shipping_address_zip={customer.shipping_address_zip}
+          shipping_address={item.shipping_address}
+          shipping_address_city={item.shipping_address_city}
+          shipping_address_state={item.shipping_address_state}
+          shipping_address_zip={item.shipping_address_zip}
         />
       ),
       action: (
         <MDBox ml={-1}>
           <MDBadge
             component="a"
-            // href="/customers/newcustomer"
-            href={`/customers/newcustomer/${customer.customer_id}`} // Pass ID in the URL
+            // href="/items/newitem"
+            href={`/items/newitem/${item.item_id}`} // Pass ID in the URL
             badgeContent="Edit"
             color={"primary"}
             variant="gradient"
             size="sm"
-            // customerid={customer.customer_id}
           />
         </MDBox>
       ),

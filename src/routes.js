@@ -37,6 +37,8 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
+import Items from "layouts/items";
+import NewItem from "layouts/items/newitem";
 import Customers from "layouts/customers";
 import NewCustomer from "layouts/customers/newcustomer";
 import Tables from "layouts/tables";
@@ -63,6 +65,29 @@ const routes = [
   {
     type: "title",
     key: "devider",
+  },
+  {
+    type: "collapse",
+    name: "Item",
+    key: "items",
+    // icon: <Icon fontSize="small">buildicon</Icon>,
+    icon: <Icon fontSize="small">handyman</Icon>,
+    route: "/items",
+    component: <Items />,
+  },
+  {
+    type: "route",
+    name: "New Item", // This name is NOT used in the sidebar
+    key: "new-items",
+    route: "/items/newitem",
+    component: <NewItem />,
+  },
+  {
+    type: "route",
+    name: "Edit Item",
+    key: "edit-item",
+    route: "/items/newitem/:item_id",
+    component: <NewItem />,
   },
   {
     type: "collapse",
