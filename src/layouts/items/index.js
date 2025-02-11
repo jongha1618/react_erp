@@ -14,6 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
@@ -24,6 +25,8 @@ import AlarmIcon from "@mui/icons-material/Alarm";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import AddIcon from "@mui/icons-material/Add";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -34,6 +37,8 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
+import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
 
 // Data
 import authorsTableData from "layouts/items/data/itemsTableData";
@@ -41,6 +46,8 @@ import authorsTableData from "layouts/items/data/itemsTableData";
 
 function Items() {
   const { columns, rows } = authorsTableData();
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const navigate = useNavigate(); // Initialize navigate function
   // const { columns: pColumns, rows: pRows } = projectsTableData();
 
   return (
@@ -79,6 +86,23 @@ function Items() {
         >
           Add Item
         </Button>
+        <Box sx={{ flexGrow: 1 }} /> {/* Spacer to push AutoComplete to the right */}
+        <Autocomplete
+          disablePortal
+          options={rows.map((row) => ({
+            label: row.item_code.props.children,
+            id: row.item_id || "",
+            key: row.key,
+          }))}
+          value={selectedCustomer}
+          onChange={(event, newValue) => {
+            if (newValue && newValue.key) {
+              navigate(`/items/newitem/${newValue.key}`);
+            }
+          }}
+          sx={{ width: 250 }}
+          renderInput={(params) => <TextField {...params} label="Item List" />}
+        />
       </Stack>
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
