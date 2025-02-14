@@ -45,7 +45,7 @@ export default function data() {
     const tableName = "ep_item_details";
 
     axios
-      .get(`http://localhost:5000/items?table=${tableName}`)
+      .get(`http://localhost:5000/item_details?table=${tableName}`)
       .then((response) => {
         setData(response.data);
         console.log("Data fetched successfully:", response.data);

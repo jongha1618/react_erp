@@ -6,20 +6,20 @@ import MDTypography from "components/MDTypography";
 import MDBadge from "components/MDBadge";
 import { Link } from "react-router-dom";
 
-const Author = ({ name, cus_id }) => (
+const Author = ({ name, sup_id }) => (
   <MDBox display="flex" alignItems="left" lineHeight={1}>
     <MDBox ml={2} lineHeight={1}>
       <MDTypography display="block" variant="button" fontWeight="medium">
         {name}
       </MDTypography>
-      <MDTypography variant="caption">{cus_id}</MDTypography>
+      <MDTypography variant="caption">{sup_id}</MDTypography>
     </MDBox>
   </MDBox>
 );
 
 Author.propTypes = {
   name: PropTypes.string,
-  cus_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  sup_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 const Address = ({
@@ -45,14 +45,14 @@ Address.propTypes = {
   shipping_address_zip: PropTypes.string,
 };
 
-// Convert into a custom hook
-export function useCustomersTableData() {
+// ✅ Convert into a custom hook
+export function useSuppliersTableData() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const tableName = "ep_customers";
+    const tableName = "ep_suppliers";
     axios
-      .get(`http://localhost:5000/customers?table=${tableName}`)
+      .get(`http://localhost:5000/suppliers?table=${tableName}`)
       .then((response) => {
         setData(response.data);
         console.log("Data fetched successfully:", response.data);
@@ -64,7 +64,7 @@ export function useCustomersTableData() {
 
   return {
     columns: [
-      { Header: "Customer ID", accessor: "customerid", align: "left" },
+      { Header: "Supplier ID", accessor: "supplierid", align: "left" },
       { Header: "Company Name", accessor: "company_name", align: "left" },
       { Header: "Contact Name", accessor: "contact_name", align: "left" },
       { Header: "Contact Email", accessor: "contact_email", align: "left" },
@@ -72,48 +72,48 @@ export function useCustomersTableData() {
       { Header: "Shipping Address", accessor: "shipping_address", align: "left" },
       { Header: "Action", accessor: "action", align: "center" },
     ],
-    rows: data.map((customer) => ({
-      key: customer.customer_id,
-      customerid: <Author name="" cus_id={customer.customer_id} />,
+    rows: data.map((supplier) => ({
+      key: supplier.supplier_id,
+      supplierid: <Author name="" sup_id={supplier.supplier_id} />,
       company_name: (
         <MDTypography
           component="a"
           // TODO: Show sales history? instead of editing.
-          href={`/customers/newcustomer/${customer.customer_id}`}
+          href={`/suppliers/newsupplier/${supplier.supplier_id}`}
           variant="caption"
           color="text"
           fontWeight="medium"
         >
-          {customer.company_name}
+          {supplier.company_name}
         </MDTypography>
       ),
       contact_name: (
         <MDTypography variant="caption" color="text" fontWeight="medium">
-          {customer.contact_name}
+          {supplier.contact_name}
         </MDTypography>
       ),
       contact_email: (
         <MDTypography variant="caption" color="text" fontWeight="medium">
-          {customer.contact_email}
+          {supplier.contact_email}
         </MDTypography>
       ),
       contact_phone: (
         <MDTypography variant="caption" color="text" fontWeight="medium">
-          {customer.contact_phone}
+          {supplier.contact_phone}
         </MDTypography>
       ),
       shipping_address: (
         <Address
-          shipping_address={customer.shipping_address}
-          shipping_address_city={customer.shipping_address_city}
-          shipping_address_state={customer.shipping_address_state}
-          shipping_address_zip={customer.shipping_address_zip}
+          shipping_address={supplier.shipping_address}
+          shipping_address_city={supplier.shipping_address_city}
+          shipping_address_state={supplier.shipping_address_state}
+          shipping_address_zip={supplier.shipping_address_zip}
         />
       ),
       action: (
         <MDBox ml={-1}>
           <Link
-            to={`/customers/newcustomer/${customer.customer_id}`}
+            to={`/suppliers/newsupplier/${supplier.supplier_id}`}
             style={{ textDecoration: "none" }}
           >
             <MDBadge badgeContent="Edit" color={"primary"} variant="gradient" size="sm" />

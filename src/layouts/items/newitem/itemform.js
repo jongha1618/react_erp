@@ -35,7 +35,7 @@ function ItemForm() {
   useEffect(() => {
     if (item_id) {
       axios
-        .get(`http://localhost:5000/item_details/${item_id}`)
+        .get(`http://localhost:5000/items/${item_id}`)
         .then((response) => {
           const sanitizedData = {
             ...item, // Ensures all keys exist
@@ -79,7 +79,7 @@ function ItemForm() {
         await axios.put(`http://localhost:5000/items/${item_id}`, item);
       } else {
         // Create new item
-        await axios.post("http://localhost:5000/additem", item);
+        await axios.post("http://localhost:5000/items", item);
       }
 
       setSuccessMessage(true);

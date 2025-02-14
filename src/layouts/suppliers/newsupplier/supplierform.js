@@ -11,11 +11,11 @@ import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import axios from "axios";
 
-function CustomerForm() {
-  const { customerid: paramCustomerID } = useParams();
+function SupplierForm() {
+  const { supplierid: paramSupplierID } = useParams();
 
   // State for form inputs
-  const [customer, setCustomer] = useState({
+  const [supplier, setSupplier] = useState({
     company_name: "",
     contact_name: "",
     contact_email: "",
@@ -32,21 +32,23 @@ function CustomerForm() {
     shipping_address_city: "",
     shipping_address_state: "",
     shipping_address_zip: "",
+    website: "",
+    tax_id: "",
     active: true,
   });
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState(false); // For success alert
   const navigate = useNavigate(); // Initialize navigate
-  const { customer_id } = useParams();
+  const { supplier_id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (customer_id) {
+    if (supplier_id) {
       axios
-        .get(`http://localhost:5000/customers/${customer_id}`)
+        .get(`http://localhost:5000/suppliers/${supplier_id}`)
         .then((response) => {
           const sanitizedData = {
-            ...customer, // Ensures all keys exist
+            ...supplier, // Ensures all keys exist
             ...response.data, // Overwrite with response data
           };
           // Replace undefined/null values with empty strings
@@ -54,15 +56,15 @@ function CustomerForm() {
             if (sanitizedData[key] == null) sanitizedData[key] = "";
           });
 
-          setCustomer(sanitizedData);
+          setSupplier(sanitizedData);
         })
-        .catch((error) => console.error("Error fetching customer:", error));
+        .catch((error) => console.error("Error fetching supplier:", error));
     }
-  }, [customer_id]);
+  }, [supplier_id]);
 
   // Handle input change
   const handleChange = (e) => {
-    setCustomer({ ...customer, [e.target.name]: e.target.value });
+    setSupplier({ ...supplier, [e.target.name]: e.target.value });
   };
 
   // Handle form submission
@@ -71,10 +73,10 @@ function CustomerForm() {
     setIsLoading(true); // Start loading
     // Check if any field is empty
     let newErrors = {};
-    if (!customer.company_name) newErrors.company_name = "Company Name is required";
-    if (!customer.contact_name) newErrors.contact_name = "Contact Name is required";
-    if (!customer.contact_email) newErrors.contact_email = "Contact Email is required";
-    if (!customer.contact_phone) newErrors.contact_phone = "Contact Phone is required";
+    if (!supplier.company_name) newErrors.company_name = "Company Name is required";
+    if (!supplier.contact_name) newErrors.contact_name = "Contact Name is required";
+    if (!supplier.contact_email) newErrors.contact_email = "Contact Email is required";
+    if (!supplier.contact_phone) newErrors.contact_phone = "Contact Phone is required";
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -82,20 +84,20 @@ function CustomerForm() {
     setErrors({});
 
     try {
-      if (customer_id) {
-        // Update existing customer
-        await axios.put(`http://localhost:5000/customers/${customer_id}`, customer);
+      if (supplier_id) {
+        // Update existing supplier
+        await axios.put(`http://localhost:5000/suppliers/${supplier_id}`, supplier);
       } else {
-        // Create new customer
-        await axios.post("http://localhost:5000/addcustomer", customer);
+        // Create new supplier
+        await axios.post("http://localhost:5000/addsupplier", supplier);
       }
 
       setSuccessMessage(true);
       setTimeout(() => {
-        navigate("/customers"); // Redirect after saving
+        navigate("/suppliers"); // Redirect after saving
       }, 2000);
     } catch (error) {
-      console.error("Error saving customer:", error);
+      console.error("Error saving supplier:", error);
     }
   };
 
@@ -113,7 +115,7 @@ function CustomerForm() {
         coloredShadow="info"
       >
         <MDTypography variant="h6" color="white">
-          Customer Information
+          Supplier Information
         </MDTypography>
       </MDBox>
       <MDBox p={3} component="form" onSubmit={handleSubmit}>
@@ -126,7 +128,7 @@ function CustomerForm() {
               type="text"
               label="Company Name"
               name="company_name"
-              value={customer.company_name || ""}
+              value={supplier.company_name || ""}
               onChange={handleChange}
               fullWidth
               required
@@ -138,7 +140,7 @@ function CustomerForm() {
               type="text"
               label="Contact Name"
               name="contact_name"
-              value={customer.contact_name || ""}
+              value={supplier.contact_name || ""}
               onChange={handleChange}
               fullWidth
               required
@@ -150,7 +152,7 @@ function CustomerForm() {
               type="email"
               label="Contact Email"
               name="contact_email"
-              value={customer.contact_email || ""}
+              value={supplier.contact_email || ""}
               onChange={handleChange}
               fullWidth
               required
@@ -162,11 +164,33 @@ function CustomerForm() {
               type="text"
               label="Contact Phone"
               name="contact_phone"
-              value={customer.contact_phone || ""}
+              value={supplier.contact_phone || ""}
               onChange={handleChange}
               fullWidth
               required
               error={Boolean(errors.contact_phone)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <MDInput
+              type="text"
+              label="Website"
+              name="website"
+              value={supplier.website || ""}
+              onChange={handleChange}
+              fullWidth
+              error={Boolean(errors.website)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <MDInput
+              type="text"
+              label="Tax ID"
+              name="tax_id"
+              value={supplier.tax_id || ""}
+              onChange={handleChange}
+              fullWidth
+              error={Boolean(errors.tax_id)}
             />
           </Grid>
         </Grid>
@@ -180,7 +204,7 @@ function CustomerForm() {
               type="text"
               label="Billing Contact Name"
               name="billing_contact_name"
-              value={customer.billing_contact_name || ""}
+              value={supplier.billing_contact_name || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -190,7 +214,7 @@ function CustomerForm() {
               type="text"
               label="Billing Phone"
               name="billing_phone"
-              value={customer.billing_phone || ""}
+              value={supplier.billing_phone || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -200,7 +224,7 @@ function CustomerForm() {
               type="text"
               label="Billing Address"
               name="billing_address"
-              value={customer.billing_address || ""}
+              value={supplier.billing_address || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -210,7 +234,7 @@ function CustomerForm() {
               type="text"
               label="Billing City"
               name="billing_address_city"
-              value={customer.billing_address_city || ""}
+              value={supplier.billing_address_city || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -220,7 +244,7 @@ function CustomerForm() {
               type="text"
               label="Billing State"
               name="billing_address_state"
-              value={customer.billing_address_state || ""}
+              value={supplier.billing_address_state || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -230,7 +254,7 @@ function CustomerForm() {
               type="text"
               label="Billing Zip"
               name="billing_address_zip"
-              value={customer.billing_address_zip || ""}
+              value={supplier.billing_address_zip || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -246,7 +270,7 @@ function CustomerForm() {
               type="text"
               label="Shipping Contact Name"
               name="shipping_contact_name"
-              value={customer.shipping_contact_name || ""}
+              value={supplier.shipping_contact_name || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -256,7 +280,7 @@ function CustomerForm() {
               type="text"
               label="Shipping Phone"
               name="shipping_phone"
-              value={customer.shipping_phone || ""}
+              value={supplier.shipping_phone || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -266,7 +290,7 @@ function CustomerForm() {
               type="text"
               label="Shipping Address"
               name="shipping_address"
-              value={customer.shipping_address || ""}
+              value={supplier.shipping_address || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -276,7 +300,7 @@ function CustomerForm() {
               type="text"
               label="Shipping City"
               name="shipping_address_city"
-              value={customer.shipping_address_city || ""}
+              value={supplier.shipping_address_city || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -286,7 +310,7 @@ function CustomerForm() {
               type="text"
               label="Shipping State"
               name="shipping_address_state"
-              value={customer.shipping_address_state || ""}
+              value={supplier.shipping_address_state || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -296,7 +320,7 @@ function CustomerForm() {
               type="text"
               label="Shipping Zip"
               name="shipping_address_zip"
-              value={customer.shipping_address_zip || ""}
+              value={supplier.shipping_address_zip || ""}
               onChange={handleChange}
               fullWidth
             />
@@ -310,7 +334,7 @@ function CustomerForm() {
             sx={{ color: "#ffffff", backgroundColor: "green" }}
             disabled={isLoading}
           >
-            {customer_id == undefined ? "Save" : "Update"}
+            {supplier_id == undefined ? "Save" : "Update"}
           </Button>
         </Stack>
         {/* Success Alert */}
@@ -320,7 +344,7 @@ function CustomerForm() {
           onClose={() => setSuccessMessage(false)}
         >
           <Alert onClose={() => setSuccessMessage(false)} severity="success">
-            Customer information saved successfully!
+            Supplier information saved successfully!
           </Alert>
         </Snackbar>
       </MDBox>
@@ -328,4 +352,4 @@ function CustomerForm() {
   );
 }
 
-export default CustomerForm;
+export default SupplierForm;

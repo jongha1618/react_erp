@@ -38,9 +38,12 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Items from "layouts/items";
+// import InventoryTransaction from "layouts/invetorytransactions";
 import NewItem from "layouts/items/newitem";
 import Customers from "layouts/customers";
 import NewCustomer from "layouts/customers/newcustomer";
+import Suppliers from "layouts/suppliers";
+import NewSupplier from "layouts/suppliers/newsupplier";
 import Tables from "layouts/tables";
 import Sales from "layouts/sales";
 import Billing from "layouts/billing";
@@ -49,6 +52,11 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+// import AssemblyItemIcon from "src/assets/images/icons/flags/assemblyitem.png";
+import AssemblyItemIcon from "./assets/images/icons/flags/assemitem.png";
+import SupplierIcon from "./assets/images/icons/flags/supplier.png";
+import InventoryTransIcon from "./assets/images/icons/flags/inventorytrans.png";
+import { Avatar } from "@mui/material";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -66,9 +74,17 @@ const routes = [
     type: "title",
     key: "devider",
   },
+  // {
+  //   type: "collapse",
+  //   name: "Job List",
+  //   key: "jobs",
+  //   icon: <Icon fontSize="small">work</Icon>,
+  //   route: "/items",
+  //   component: <Items />,
+  // },
   {
     type: "collapse",
-    name: "Item",
+    name: "Item (Part)",
     key: "items",
     // icon: <Icon fontSize="small">buildicon</Icon>,
     icon: <Icon fontSize="small">handyman</Icon>,
@@ -88,6 +104,15 @@ const routes = [
     key: "edit-item",
     route: "/items/newitem/:item_id",
     component: <NewItem />,
+  },
+  {
+    type: "collapse",
+    name: "Assembly Item",
+    key: "assembly items",
+    icon: <Avatar src={AssemblyItemIcon} sx={{ width: 24, height: 24 }} />, // Using Avatar for proper sizing
+    // icon: <img src={AssemblyItemIcon} alt="Assembly Item" style={{ width: 24, height: 24 }} />,
+    route: "/assemblyitems",
+    component: <Items />,
   },
   {
     type: "collapse",
@@ -119,6 +144,36 @@ const routes = [
     route: "/customers/newcustomer/:customer_id",
     component: <NewCustomer />,
   },
+  {
+    type: "collapse",
+    name: "Supplier",
+    key: "suppliers",
+    icon: <Avatar src={SupplierIcon} sx={{ width: 24, height: 24 }} />,
+    route: "/suppliers",
+    component: <Suppliers />,
+  },
+  {
+    type: "route",
+    name: "New Supplier", // This name is NOT used in the sidebar
+    key: "new-suppliers",
+    route: "/suppliers/newsupplier",
+    component: <NewSupplier />,
+  },
+  {
+    type: "route",
+    name: "Edit Supplier",
+    key: "edit-supplier",
+    route: "/suppliers/newsupplier/:supplier_id",
+    component: <NewSupplier />,
+  },
+  // {
+  //   type: "collapse",
+  //   name: "Inventory Transaction",
+  //   key: "inventory-transaction",
+  //   icon: <Avatar src={InventoryTransIcon} sx={{ width: 24, height: 24 }} />, // Using Avatar for proper sizing
+  //   route: "/inventorytransaction",
+  //   component: <InventoryTransaction />,
+  // },
   {
     type: "collapse",
     name: "Inventory",
